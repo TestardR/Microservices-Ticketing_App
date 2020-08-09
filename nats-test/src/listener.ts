@@ -20,7 +20,12 @@ stan.on('connect', () => {
     .setManualAckMode(true)
     .setDeliverAllAvailable()
     .setDurableName('orders-svc');
-  const subscription = stan.subscribe('ticket:created', options);
+
+  const subscription = stan.subscribe(
+    'ticket:created',
+    'orders-queue-group',
+    options
+  );
 
   subscription.on('message', (msg: Message) => {
     const data = msg.getData();
